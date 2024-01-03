@@ -7,7 +7,7 @@ export interface IdollInfo {
   dollName: string;
   size: number;
   whereBuy: string;
-  manager: string;
+  groupOrder: string;
   price: number;
   etc: string | null;
   img: string | null;
@@ -20,7 +20,7 @@ export const dollLists: IdollInfo[] = [
     dollName: "프루",
     size: 10,
     whereBuy: "트위터",
-    manager: "공구주1",
+    groupOrder: "공구주1",
     price: 135000,
     etc: null,
     img: null,
@@ -31,7 +31,7 @@ export const dollLists: IdollInfo[] = [
     dollName: "김밥든프루",
     size: 20,
     whereBuy: "트위터",
-    manager: "공구주1",
+    groupOrder: "공구주1",
     price: 99000,
     etc: null,
     img: null,
@@ -42,7 +42,40 @@ export const dollLists: IdollInfo[] = [
     dollName: "피자든프루dsadas",
     size: 30,
     whereBuy: "트위터",
-    manager: "공구주1",
+    groupOrder: "공구주1",
+    price: 119500,
+    etc: null,
+    img: null,
+    attr: null,
+  },
+  {
+    id: 3,
+    dollName: "프루",
+    size: 10,
+    whereBuy: "트위터",
+    groupOrder: "공구주1",
+    price: 135000,
+    etc: null,
+    img: null,
+    attr: null,
+  },
+  {
+    id: 4,
+    dollName: "김밥든프루",
+    size: 20,
+    whereBuy: "트위터",
+    groupOrder: "공구주1",
+    price: 99000,
+    etc: null,
+    img: null,
+    attr: null,
+  },
+  {
+    id: 5,
+    dollName: "피자든프루dsadas",
+    size: 30,
+    whereBuy: "트위터",
+    groupOrder: "공구주1",
     price: 119500,
     etc: null,
     img: null,
@@ -60,16 +93,17 @@ const Item = styled.div`
     white-space: nowrap;
   }
   margin-bottom: 30px;
+  font-size: ${(props) => props.theme.fontSize};
+  font-weight: 700;
 `;
 
 const DollListWrapper = styled.div`
-  display: block;
   max-width: 700px;
   margin: 0 auto;
-  background-color: wheat;
+  background-color: ${(props) => props.theme.bgColor};
 `;
 
-const DollImg = styled.img`
+export const DollImg = styled.img`
   width: 200px;
 `;
 // 스크롤width이슈가 있음
@@ -82,23 +116,21 @@ function DollList() {
     setReady(true);
   }, []);
   return (
-    <div>
-      <DollListWrapper>
-        {list?.map((doll) => (
-          <div key={doll.id}>
-            <Item>
-              <DollImg
-                src="som1.jpg"
-                onClick={() => {
-                  navigate(`/doll/${doll.id}`);
-                }}
-              />
-              <div>{doll.dollName}</div>
-            </Item>
-          </div>
-        ))}
-      </DollListWrapper>
-    </div>
+    <DollListWrapper>
+      {list?.map((doll) => (
+        <div key={doll.id}>
+          <Item>
+            <DollImg
+              src="som1.jpg"
+              onClick={() => {
+                navigate(`/doll/${doll.id}`);
+              }}
+            />
+            <div>{doll.dollName}</div>
+          </Item>
+        </div>
+      ))}
+    </DollListWrapper>
   );
 }
 

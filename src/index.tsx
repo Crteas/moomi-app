@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createGlobalStyle } from "styled-components";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
+import { lightTheme } from "./theme";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -40,8 +41,9 @@ footer, header, hgroup, main, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: ${(props) => props.theme.bodyColor};
+	menu, ol, ul {
 }
-menu, ol, ul {
 	list-style: none;
 }
 blockquote, q {
@@ -64,7 +66,9 @@ a{
 
 root.render(
   <React.StrictMode>
-    <GlobalStyle />
-    <RouterProvider router={router} />
+    <ThemeProvider theme={lightTheme}>
+      <GlobalStyle />
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </React.StrictMode>
 );

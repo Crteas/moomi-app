@@ -3,6 +3,7 @@ import ErrorPage from "./components/ErrorPage";
 import App from "./App";
 import DollList from "./components/DollList";
 import DollDetail from "./components/DollDetail";
+import DollRegist from "./components/DollRegist";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "/doll/:id",
         element: <DollDetail />,
+      },
+      {
+        path: "/doll/regist",
+        element: <DollRegist />,
       },
     ],
     errorElement: <ErrorPage />,
