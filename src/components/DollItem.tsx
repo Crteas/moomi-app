@@ -41,13 +41,13 @@ export default function DollItem({
         />
       </Column>
       <Column>
-        <p>{dollName}</p>
-        <p>{price}</p>
-        <p>{size}</p>
-        <p>{whereBuy}</p>
-        <p>{groupOrder}</p>
-        <p>{attr}</p>
-        <p>{etc}</p>
+        <p>이름:{dollName}</p>
+        <p>가격:{price}</p>
+        <p>크기:{size}</p>
+        <p>구매처:{whereBuy}</p>
+        <p>공구주:{groupOrder}</p>
+        <p>속성:{attr}</p>
+        <p>비고:{etc}</p>
       </Column>
     </Wrapper>
   );

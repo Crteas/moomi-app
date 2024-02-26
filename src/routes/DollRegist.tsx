@@ -154,11 +154,11 @@ function DollRegist() {
           placeholder="속성"
           type="text"
         />
-        <label htmlFor="etc">상황</label>
+        <label htmlFor="etc">비고</label>
         <DollInput
           id="etc"
           {...register("etc", { maxLength: 30 })}
-          placeholder="상황"
+          placeholder="비고"
           type="text"
         />
         <label>사진</label>

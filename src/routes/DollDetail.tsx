@@ -25,9 +25,13 @@ function DollDetail() {
   const [dollInfo, setDollInfo] = useState<IdollInfo>();
   const fetchDoll = async () => {
     if (!id) return; // 잘못된 아이디 처리해야함
-    const docRef = doc(db, "dolls", id);
-    const dollDetail = (await getDoc(docRef)).data() as IdollInfo;
-    setDollInfo(dollDetail);
+    try {
+      const docRef = doc(db, "dolls", id);
+      const dollDetail = (await getDoc(docRef)).data() as IdollInfo;
+      setDollInfo(dollDetail);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const onDelete = async () => {
@@ -48,6 +52,10 @@ function DollDetail() {
     }
   };
 
+  const editBtnClick = async () => {
+    navigate("/");
+  };
+
   useEffect(() => {
     fetchDoll();
   }, []);
@@ -65,13 +73,13 @@ function DollDetail() {
         <div>가격: {dollInfo?.price}</div>
         <div>크기: {dollInfo?.size}</div>
         <div>구매처: {dollInfo?.whereBuy}</div>
-        <div>속성: {dollInfo?.attr ? "속성" : "무속성"}</div>
-        <div>비고: {dollInfo?.etc ? dollInfo.etc : "없음"}</div>
+        <div>속성: {dollInfo?.attr}</div>
+        <div>비고: {dollInfo?.etc}</div>
       </main>
       {user?.uid === dollInfo?.userId ? (
         <Column>
           <DeleteBtn onClick={onDelete}>삭제</DeleteBtn>
-          <EditBtn>수정</EditBtn>
+          <EditBtn onClick={editBtnClick}>수정</EditBtn>
         </Column>
       ) : null}
     </DollDetailWrapper>

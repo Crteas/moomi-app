@@ -9,6 +9,7 @@ import Home from "./routes/Home";
 import CreateAccount from "./routes/CreateAccount";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/protected-route";
+import Cloth from "./routes/Cloth";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/cloth",
+        element: <Cloth />,
       },
 
       {
