@@ -53,7 +53,7 @@ function DollDetail() {
   };
 
   const editBtnClick = async () => {
-    navigate("/");
+    navigate(`/dolls/${id}/edit`);
   };
 
   useEffect(() => {
@@ -62,18 +62,20 @@ function DollDetail() {
   return (
     <DollDetailWrapper>
       <header>
-        <Link to={"/"}>이전으로</Link>
+        <Link to={"/dolls/list"}>이전으로</Link>
       </header>
       <main>
         <div>
           <DollImg src={dollInfo?.photo} />
         </div>
-        <div>이름: {dollInfo?.dollName}</div>
-        <div>공구주: {dollInfo?.groupOrder}</div>
+        <div>이름: {dollInfo?.name}</div>
+        <div>
+          공구주: {dollInfo?.groupOrder ? dollInfo?.groupOrder : "없음"}
+        </div>
         <div>가격: {dollInfo?.price}</div>
-        <div>크기: {dollInfo?.size}</div>
+        <div>크기: {dollInfo?.size} cm</div>
         <div>구매처: {dollInfo?.whereBuy}</div>
-        <div>속성: {dollInfo?.attr}</div>
+        <div>속성: {dollInfo?.attr === "attr" ? "속성" : "무속성"}</div>
         <div>비고: {dollInfo?.etc}</div>
       </main>
       {user?.uid === dollInfo?.userId ? (

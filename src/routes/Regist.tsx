@@ -31,18 +31,19 @@ const ErrorSpan = styled.span`
 const DollInput = styled.input.attrs({ autoComplete: "off" })``;
 
 type IForm = {
-  dollName: string;
+  name: string;
   size: string;
   whereBuy: string;
   groupOrder: string;
   price: number;
   attr: string;
   etc: string;
+  category: string;
   photo?: FileList;
   extraError?: string;
 };
 
-function DollRegist() {
+function Regist() {
   // handleSubmit(onVaild, onInvalid)
   const navigate = useNavigate();
   const {
@@ -57,8 +58,17 @@ function DollRegist() {
   // 입력을 잘 했다면 실행
   const onValid = async (data: IForm) => {
     const user = auth.currentUser;
-    const { dollName, whereBuy, price, size, groupOrder, etc, attr, photo } =
-      data;
+    const {
+      name,
+      whereBuy,
+      price,
+      size,
+      groupOrder,
+      etc,
+      attr,
+      photo,
+      category,
+    } = data;
 
     try {
       if (photo) {
@@ -69,8 +79,8 @@ function DollRegist() {
         }
       }
       setLoading(true);
-      const doc = await addDoc(collection(db, "dolls"), {
-        dollName,
+      const doc = await addDoc(collection(db, category), {
+        name,
         whereBuy,
         price,
         size,
@@ -83,7 +93,7 @@ function DollRegist() {
 
       if (photo) {
         console.log(photo[0]);
-        const locationRef = ref(storage, `dolls/${user?.uid}/${doc.id}`);
+        const locationRef = ref(storage, `${category}/${user?.uid}/${doc.id}`);
         const result = await uploadBytes(locationRef, photo[0]); // 파일 업로드
         //파일 업로드 후 그 파일의 퍼블릭 url을 받는것
         const url = await getDownloadURL(result.ref);
@@ -95,17 +105,29 @@ function DollRegist() {
       console.log(e);
     } finally {
       setLoading(false);
-      navigate("/");
+      navigate(`/${category}/list`);
     }
   };
   return (
     <FormContainer>
       <form onSubmit={handleSubmit(onValid)}>
+        <label>카테고리</label>
+        <select {...register("category")}>
+          <option value={"dolls"}>솜인형</option>
+          <option value={"closet"}>옷장</option>
+          <option value={"other"}>기타</option>
+        </select>
+        <label htmlFor="attr">속성</label>
+        <select id="attr" {...register("attr")}>
+          <option value="noattr">무속성</option>
+          <option value="attr">속성</option>
+        </select>
+        <br />
         <label htmlFor="dollName">솜인형 이름</label>
-        <ErrorSpan>{errors.dollName?.message as string}</ErrorSpan>
+        <ErrorSpan>{errors.name?.message as string}</ErrorSpan>
         <DollInput
-          id="dollName"
-          {...register("dollName", { required: "솜인형 이름을 입력해주세요." })}
+          id="name"
+          {...register("name", { required: "솜인형 이름을 입력해주세요." })}
           placeholder="솜인형 이름"
           type="text"
         />
@@ -128,10 +150,9 @@ function DollRegist() {
           type="text"
         />
         <label htmlFor="groupOrder">공구주</label>
-        <ErrorSpan>{errors.groupOrder?.message as string}</ErrorSpan>
         <DollInput
           id="groupOrder"
-          {...register("groupOrder", { required: "공구주를 입력해주세요." })}
+          {...register("groupOrder")}
           placeholder="공구주"
           type="text"
         />
@@ -146,14 +167,7 @@ function DollRegist() {
           placeholder="가격"
           type="number"
         />
-        <label htmlFor="attr">속성</label>
-        <ErrorSpan>{errors.attr?.message as string}</ErrorSpan>
-        <DollInput
-          id="attr"
-          {...register("attr", { required: "속성을 입력해주세요." })}
-          placeholder="속성"
-          type="text"
-        />
+
         <label htmlFor="etc">비고</label>
         <DollInput
           id="etc"
@@ -174,4 +188,4 @@ function DollRegist() {
     </FormContainer>
   );
 }
-export default DollRegist;
+export default Regist;

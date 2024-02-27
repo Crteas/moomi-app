@@ -4,7 +4,6 @@ import { Unsubscribe } from "firebase/auth";
 import styled from "styled-components";
 import {
   collection,
-  getDocs,
   limit,
   onSnapshot,
   orderBy,
@@ -18,13 +17,15 @@ const DollListWrapper = styled.div`
   max-width: 700px;
   margin: 0 auto;
   background-color: ${(props) => props.theme.bgColor};
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;
 
 export const DollImg = styled.img`
   width: 200px;
 `;
 export interface IdollInfo {
-  dollName: string;
+  name: string;
   size: string;
   whereBuy: string;
   groupOrder: string;
@@ -54,7 +55,7 @@ function DollList() {
         const list = snapshot.docs.map((doc) => {
           const {
             createdAt,
-            dollName,
+            name,
             whereBuy,
             groupOrder,
             price,
@@ -66,7 +67,7 @@ function DollList() {
           } = doc.data();
           return {
             createdAt,
-            dollName,
+            name,
             whereBuy,
             groupOrder,
             price,

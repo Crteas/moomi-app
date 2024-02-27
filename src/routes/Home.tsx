@@ -1,7 +1,5 @@
-import DollList from "./DollList";
-
 function Home() {
-  return <DollList />;
+  return <>Home</>;
 }
 
 export default Home;

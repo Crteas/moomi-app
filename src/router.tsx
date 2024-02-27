@@ -1,15 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
 import ErrorPage from "./components/ErrorPage";
-import App from "./App";
 import DollList from "./routes/DollList";
 import DollDetail from "./routes/DollDetail";
-import DollRegist from "./routes/DollRegist";
 import LoginPage from "./routes/LoginPage";
 import Home from "./routes/Home";
 import CreateAccount from "./routes/CreateAccount";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/protected-route";
-import Cloth from "./routes/Cloth";
+import ClothList from "./routes/ClothList";
+import Regist from "./routes/Regist";
+import DollEdit from "./routes/DollEdit";
 
 const router = createBrowserRouter([
   {
@@ -25,17 +25,21 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/cloth",
-        element: <Cloth />,
+        path: "/closet/list",
+        element: <ClothList />,
       },
-
+      { path: "/dolls/list", element: <DollList /> },
       {
-        path: "/doll/:id",
+        path: "/dolls/:id",
         element: <DollDetail />,
       },
       {
-        path: "/doll/regist",
-        element: <DollRegist />,
+        path: "/dolls/:id/edit",
+        element: <DollEdit />,
+      },
+      {
+        path: "/item/regist",
+        element: <Regist />,
       },
     ],
     errorElement: <ErrorPage />,

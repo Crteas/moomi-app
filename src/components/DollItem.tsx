@@ -1,16 +1,21 @@
 import styled from "styled-components";
 import { IdollInfo } from "../routes/DollList";
-import { auth, db, storage } from "../firebase";
-import { deleteDoc, doc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
 import { useNavigate } from "react-router";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  padding: 10px;
+  box-sizing: border-box;
+`;
 
-const Column = styled.div``;
+const Column = styled.div`
+  text-align: center;
+`;
 
 const Photo = styled.img`
   width: 250px;
+  height: 250px;
+  object-fit: contain;
+  background-color: #e8ece6;
 `;
 
 const DeleteBtn = styled.button``;
@@ -18,7 +23,7 @@ const EditBtn = styled.button``;
 
 export default function DollItem({
   attr,
-  dollName,
+  name,
   etc,
   groupOrder,
   photo,
@@ -36,18 +41,12 @@ export default function DollItem({
         <Photo
           src={photo}
           onClick={() => {
-            navigate(`doll/${id}`);
+            navigate(`/dolls/${id}`);
           }}
         />
       </Column>
       <Column>
-        <p>이름:{dollName}</p>
-        <p>가격:{price}</p>
-        <p>크기:{size}</p>
-        <p>구매처:{whereBuy}</p>
-        <p>공구주:{groupOrder}</p>
-        <p>속성:{attr}</p>
-        <p>비고:{etc}</p>
+        <p>{name}</p>
       </Column>
     </Wrapper>
   );
