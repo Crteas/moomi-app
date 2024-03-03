@@ -1,15 +1,23 @@
 import {
   addDoc,
   collection,
-  query,
+  deleteDoc,
+  doc,
+  getDoc,
   updateDoc,
-  where,
 } from "firebase/firestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { auth, db, storage } from "../firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { useNavigate, useParams } from "react-router";
+import { IdollInfo } from "../components/ItemList";
 // 인형정보를 등록하는 페이지
 const FormContainer = styled.div`
   margin: 0 auto;
@@ -36,19 +44,21 @@ const ErrorSpan = styled.span`
 const DollInput = styled.input.attrs({ autoComplete: "off" })``;
 
 type IForm = {
-  dollName: string;
+  name: string;
   size: string;
   whereBuy: string;
   groupOrder: string;
   price: number;
   attr: string;
   etc: string;
+  category: string;
   photo?: FileList;
   extraError?: string;
 };
-
 function DollEdit() {
-  // handleSubmit(onVaild, onInvalid)
+  const [isLoading, setLoading] = useState(false);
+  const { id } = useParams();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -56,62 +66,106 @@ function DollEdit() {
     setError,
   } = useForm<IForm>();
 
-  const [isLoading, setLoading] = useState(false);
+  const setInputValue = async () => {
+    try {
+      const docRef = doc(db, "item", String(id));
+      const docSnap = await getDoc(docRef);
+      return docSnap.data() as IdollInfo;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    setInputValue();
+  });
 
   // 입력을 잘 했다면 실행
   const onValid = async (data: IForm) => {
     const user = auth.currentUser;
-    const { dollName, whereBuy, price, size, groupOrder, etc, attr, photo } =
-      data;
-
+    const {
+      name,
+      whereBuy,
+      price,
+      size,
+      groupOrder,
+      etc,
+      attr,
+      photo,
+      category,
+    } = data;
     try {
-      // 파일 크기 제한
       if (photo) {
-        const maxFileSize = 1024 * 1024 * 3;
-        if (photo[0].size > maxFileSize) {
-          alert("파일 ㅈㄴ큼");
-          return;
+        if (photo.length > 0) {
+          const maxFileSize = 1024 * 1024 * 3;
+          if (photo[0].size > maxFileSize) {
+            alert("파일 최대크기는 3MB 미만입니다. ");
+            return;
+          }
         }
       }
       setLoading(true);
-      const doc = await addDoc(collection(db, "dolls"), {
-        dollName,
+      // 수정으로 바꾸기
+
+      const docRef = doc(db, "item", String(id));
+      const docSnap = await getDoc(docRef);
+
+      console.log(`item/${user?.uid}/${id}`);
+      await updateDoc(docRef, {
+        name,
         whereBuy,
         price,
         size,
         groupOrder,
         etc,
         attr,
-        createdAt: Date.now(),
-        userId: user?.uid,
+        category,
       });
 
-      //   const dollQuery = query(collection(db,"dolls"),where("","=="))
-
+      // 사진 삭제후 재등록
       if (photo) {
-        console.log(photo[0]);
-        const locationRef = ref(storage, `dolls/${user?.uid}/${doc.id}`);
-        const result = await uploadBytes(locationRef, photo[0]); // 파일 업로드
-        //파일 업로드 후 그 파일의 퍼블릭 url을 받는것
-        const url = await getDownloadURL(result.ref);
-        await updateDoc(doc, {
-          photo: url,
-        });
+        if (photo.length > 0) {
+          // 이미지 주소
+          const imgRef = ref(storage, `item/${user?.uid}/${id}`);
+          // 파일삭제
+          await deleteObject(imgRef);
+          const locationRef = ref(storage, `item/${user?.uid}/${id}`);
+          const result = await uploadBytes(locationRef, photo[0]); // 파일 업로드
+          // 파일 업로드 후 그 파일의 퍼블릭 url을 받는것
+          const url = await getDownloadURL(result.ref);
+          await updateDoc(docRef, {
+            photo: url,
+          });
+        }
       }
     } catch (e) {
       console.log(e);
     } finally {
       setLoading(false);
+      //네비게이트 바꾸기
+      // navigate(`/${category}/list`);
     }
   };
   return (
     <FormContainer>
       <form onSubmit={handleSubmit(onValid)}>
+        <label>카테고리</label>
+        <select {...register("category")}>
+          <option value={"dolls"}>솜인형</option>
+          <option value={"closet"}>옷장</option>
+          <option value={"other"}>기타</option>
+        </select>
+        <label htmlFor="attr">속성</label>
+        <select id="attr" {...register("attr")}>
+          <option value="noattr">무속성</option>
+          <option value="attr">속성</option>
+        </select>
+        <br />
         <label htmlFor="dollName">솜인형 이름</label>
-        <ErrorSpan>{errors.dollName?.message as string}</ErrorSpan>
+        <ErrorSpan>{errors.name?.message as string}</ErrorSpan>
         <DollInput
-          id="dollName"
-          {...register("dollName", { required: "솜인형 이름을 입력해주세요." })}
+          id="name"
+          {...register("name", { required: "솜인형 이름을 입력해주세요." })}
           placeholder="솜인형 이름"
           type="text"
         />
@@ -134,10 +188,9 @@ function DollEdit() {
           type="text"
         />
         <label htmlFor="groupOrder">공구주</label>
-        <ErrorSpan>{errors.groupOrder?.message as string}</ErrorSpan>
         <DollInput
           id="groupOrder"
-          {...register("groupOrder", { required: "공구주를 입력해주세요." })}
+          {...register("groupOrder")}
           placeholder="공구주"
           type="text"
         />
@@ -152,19 +205,12 @@ function DollEdit() {
           placeholder="가격"
           type="number"
         />
-        <label htmlFor="attr">속성</label>
-        <ErrorSpan>{errors.attr?.message as string}</ErrorSpan>
-        <DollInput
-          id="attr"
-          {...register("attr", { required: "속성을 입력해주세요." })}
-          placeholder="속성"
-          type="text"
-        />
-        <label htmlFor="etc">상황</label>
+
+        <label htmlFor="etc">비고</label>
         <DollInput
           id="etc"
           {...register("etc", { maxLength: 30 })}
-          placeholder="상황"
+          placeholder="비고"
           type="text"
         />
         <label>사진</label>

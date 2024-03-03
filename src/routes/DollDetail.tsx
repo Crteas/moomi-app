@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { DollImg, IdollInfo } from "./DollList";
+import { DollImg, IdollInfo } from "../components/ItemList";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -26,7 +26,7 @@ function DollDetail() {
   const fetchDoll = async () => {
     if (!id) return; // 잘못된 아이디 처리해야함
     try {
-      const docRef = doc(db, "dolls", id);
+      const docRef = doc(db, "item", id);
       const dollDetail = (await getDoc(docRef)).data() as IdollInfo;
       setDollInfo(dollDetail);
     } catch (e) {
@@ -41,9 +41,9 @@ function DollDetail() {
     const ok = window.confirm("정말 삭제하시겠습니까?");
     if (!ok || user?.uid !== userId) return;
     try {
-      await deleteDoc(doc(db, "dolls", id));
+      await deleteDoc(doc(db, "item", id));
       if (photo) {
-        const photoRef = ref(storage, `dolls/${user?.uid}/${id}`);
+        const photoRef = ref(storage, `item/${user?.uid}/${id}`);
         await deleteObject(photoRef);
       }
       navigate("/");

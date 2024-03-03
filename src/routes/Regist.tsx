@@ -74,12 +74,12 @@ function Regist() {
       if (photo) {
         const maxFileSize = 1024 * 1024 * 3;
         if (photo[0].size > maxFileSize) {
-          alert("파일 ㅈㄴ큼");
+          alert("파일 최대크기는 3MB 미만입니다. ");
           return;
         }
       }
       setLoading(true);
-      const doc = await addDoc(collection(db, category), {
+      const doc = await addDoc(collection(db, "item"), {
         name,
         whereBuy,
         price,
@@ -87,13 +87,14 @@ function Regist() {
         groupOrder,
         etc,
         attr,
+        category,
         createdAt: Date.now(),
         userId: user?.uid,
       });
 
       if (photo) {
         console.log(photo[0]);
-        const locationRef = ref(storage, `${category}/${user?.uid}/${doc.id}`);
+        const locationRef = ref(storage, `item/${user?.uid}/${doc.id}`);
         const result = await uploadBytes(locationRef, photo[0]); // 파일 업로드
         //파일 업로드 후 그 파일의 퍼블릭 url을 받는것
         const url = await getDownloadURL(result.ref);

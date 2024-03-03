@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { IdollInfo } from "./routes/DollList";
+import { IdollInfo } from "./components/ItemList";
 
 // export const fakeDB = atom<IdollInfo[]>({
 //   key: "fakeDB",

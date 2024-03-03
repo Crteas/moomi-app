@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { IdollInfo } from "../routes/DollList";
+import { IdollInfo } from "./ItemList";
 import { useNavigate } from "react-router";
 
 const Wrapper = styled.div`

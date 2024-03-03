@@ -1,15 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
 import ErrorPage from "./components/ErrorPage";
-import DollList from "./routes/DollList";
+import DollList from "./components/ItemList";
 import DollDetail from "./routes/DollDetail";
 import LoginPage from "./routes/LoginPage";
 import Home from "./routes/Home";
 import CreateAccount from "./routes/CreateAccount";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/protected-route";
-import ClothList from "./routes/ClothList";
 import Regist from "./routes/Regist";
 import DollEdit from "./routes/DollEdit";
+import ClosetList from "./routes/ClosetList";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/closet/list",
-        element: <ClothList />,
+        element: <ClosetList />,
       },
       { path: "/dolls/list", element: <DollList /> },
       {
