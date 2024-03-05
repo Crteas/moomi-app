@@ -59,7 +59,7 @@ table {
 }
 a{
 	text-decoration: none;
-	font-size: 25px;
+  color:black;
 }
 `;
 
