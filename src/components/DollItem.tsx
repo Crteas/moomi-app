@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { IdollInfo } from "./ItemList";
 import { useNavigate } from "react-router";
+import { IdollInfo } from "../types/types";
 
 const Wrapper = styled.div`
   padding: 10px;
@@ -21,32 +21,21 @@ const Photo = styled.img`
 const DeleteBtn = styled.button``;
 const EditBtn = styled.button``;
 
-export default function DollItem({
-  attr,
-  name,
-  etc,
-  groupOrder,
-  photo,
-  price,
-  size,
-  whereBuy,
-  userId,
-  id,
-}: IdollInfo) {
+export default function DollItem({ ...data }: IdollInfo) {
   const navigate = useNavigate();
 
   return (
     <Wrapper>
       <Column>
         <Photo
-          src={photo}
+          src={data.photo}
           onClick={() => {
-            navigate(`/dolls/${id}`);
+            navigate(`/dolls/${data.id}`);
           }}
         />
       </Column>
       <Column>
-        <p>{name}</p>
+        <p>{data.name}</p>
       </Column>
     </Wrapper>
   );

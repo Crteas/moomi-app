@@ -6,6 +6,7 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router";
 import { FirebaseError } from "firebase/app";
 import { Link } from "react-router-dom";
+import { IUserData } from "../types/types";
 
 const Wrapper = styled.div`
   max-width: 600px;
@@ -27,12 +28,6 @@ const Form = styled.form`
 
 const Input = styled.input``;
 const Switcher = styled.div``;
-type IUserData = {
-  email: string;
-  name: string;
-  password: string;
-  error?: string;
-};
 
 function CreateAccount() {
   const navigate = useNavigate();

@@ -1,14 +1,15 @@
-import { useNavigate, useParams } from "react-router";
-import { DollImg, IdollInfo } from "../components/ItemList";
+import { NavigateFunction, Params, useNavigate, useParams } from "react-router";
+import { DollImg } from "../components/ItemList";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { auth, db, storage } from "../firebase";
 import { deleteObject, ref } from "firebase/storage";
+import { IdollInfo } from "../types/types";
+import { User } from "firebase/auth";
 
 const DollDetailWrapper = styled.div`
-  margin: 0 auto;
   max-width: 700px;
   margin: 0 auto;
   background-color: ${(props) => props.theme.bgColor};
@@ -19,9 +20,9 @@ const DeleteBtn = styled.button``;
 const EditBtn = styled.button``;
 
 function DollDetail() {
-  const user = auth.currentUser;
+  const user: User | null = auth.currentUser;
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id } = useParams(); // url의 id를 불러옴
   const [dollInfo, setDollInfo] = useState<IdollInfo>();
   const fetchDoll = async () => {
     if (!id) return; // 잘못된 아이디 처리해야함

@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { IShortCutIcon } from "../types/types";
 
 const Wrapper = styled.li`
   width: 50px;
   height: 50px;
   border-radius: 10px;
   border: 2px solid black;
+  box-sizing: border-box;
 `;
 
 const ShortCutIconImg = styled.img`
   border-radius: 20px;
+  margin-bottom: 5px;
 `;
 
 const ServiceName = styled.span`
@@ -22,16 +25,11 @@ const IconLink = styled(Link)`
   flex-direction: column;
 `;
 
-type IShortCutIcon = {
-  url: string;
-  src: "dolls" | "closet" | "etc";
-  name: string;
-};
-
 const imgSrcObject = {
   dolls: "./iconImg/dolls_Icon.png",
   closet: "./iconImg/closet_Icon.png",
-  etc: "./iconImg/etc_Icon.png",
+  link: "./iconImg/link_Icon.png",
+  add: "./iconImg/add_item_Icon.png",
 };
 
 export default function ShortCutIcon({ url, src, name }: IShortCutIcon) {

@@ -18,11 +18,6 @@ const Title = styled.h1`
   font-size: 20px;
 `;
 
-const Button = styled.button`
-  border-radius: 150px;
-  border: none;
-`;
-
 const MainWrapper = styled.div`
   display: flex;
   flex-shrink: 0;
@@ -31,8 +26,7 @@ const MainWrapper = styled.div`
 `;
 
 const Main = styled.div`
-  margin: 10px;
-  width: 100%;
+  width: 100vw;
 `;
 
 function Layout() {

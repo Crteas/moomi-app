@@ -17,7 +17,7 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { useNavigate, useParams } from "react-router";
-import { IdollInfo } from "../components/ItemList";
+import { IdollInfo } from "../types/types";
 // 인형정보를 등록하는 페이지
 const FormContainer = styled.div`
   margin: 0 auto;
@@ -78,7 +78,7 @@ function DollEdit() {
 
   useEffect(() => {
     setInputValue();
-  });
+  }, []);
 
   // 입력을 잘 했다면 실행
   const onValid = async (data: IForm) => {
@@ -108,7 +108,6 @@ function DollEdit() {
       // 수정으로 바꾸기
 
       const docRef = doc(db, "item", String(id));
-      const docSnap = await getDoc(docRef);
 
       console.log(`item/${user?.uid}/${id}`);
       await updateDoc(docRef, {

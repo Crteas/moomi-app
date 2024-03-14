@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import DollItem from "./DollItem";
+import { IdollInfo } from "../types/types";
 
 const DollListWrapper = styled.div`
   max-width: 700px;
@@ -24,19 +25,6 @@ const DollListWrapper = styled.div`
 export const DollImg = styled.img`
   width: 200px;
 `;
-export interface IdollInfo {
-  name: string;
-  size: string;
-  whereBuy: string;
-  groupOrder: string;
-  price: string;
-  etc: string;
-  photo: string;
-  attr: string;
-  id: string;
-  category: string;
-  userId: string;
-}
 
 // 스크롤width이슈가 있음
 function ItemList() {
@@ -67,32 +55,10 @@ function ItemList() {
 
       unsubscribe = await onSnapshot(dollListQuery, (snapshot) => {
         const list = snapshot.docs.map((doc) => {
-          const {
-            createdAt,
-            name,
-            whereBuy,
-            groupOrder,
-            price,
-            size,
-            attr,
-            etc,
-            photo,
-            category,
-            userId,
-          } = doc.data();
+          const data = doc.data() as IdollInfo;
           return {
-            createdAt,
-            name,
-            whereBuy,
-            groupOrder,
-            price,
-            size,
-            attr,
-            etc,
-            category,
-            photo,
-            id: doc.id,
-            userId,
+            ...data,
+            id: doc.id, // document의 id.
           };
         });
         setItemList(list);
