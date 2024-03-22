@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/protected-route";
 import Regist from "./routes/Regist";
 import DollEdit from "./routes/DollEdit";
 import ClosetList from "./routes/ClosetList";
+import AddGBItem from "./routes/AddGBItem";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/addGBitem",
+        element: <AddGBItem />,
       },
       {
         path: "/closet/list",

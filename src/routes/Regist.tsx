@@ -30,7 +30,7 @@ const ErrorSpan = styled.span`
 `;
 const DollInput = styled.input.attrs({ autoComplete: "off" })``;
 
-type IForm = {
+type IRegForm = {
   name: string;
   size: string;
   whereBuy: string;
@@ -51,12 +51,12 @@ function Regist() {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<IForm>();
+  } = useForm<IRegForm>();
 
   const [isLoading, setLoading] = useState(false);
 
   // 입력을 잘 했다면 실행
-  const onValid = async (data: IForm) => {
+  const onValid = async (data: IRegForm) => {
     const user = auth.currentUser;
     const {
       name,
