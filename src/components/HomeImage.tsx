@@ -10,7 +10,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { IdollInfo } from "../types/types";
+import { IdollsAndCloset } from "../types/types";
 
 const Wrapper = styled.div``;
 const Img = styled.img`
@@ -62,7 +62,7 @@ export default function HomeImage() {
       if (user) {
         //dolls 를 불러오기위한 query
         const imgListQuery = query(
-          collection(db, "item"),
+          collection(db, "dollsAndCloset"),
           where("userId", "==", user?.uid),
           where("category", "==", "dolls"),
           orderBy("createdAt", "desc"),
@@ -74,8 +74,8 @@ export default function HomeImage() {
 
         // 불러온 아이템중 photo만 배열에 넣기
         const newImgList = snapShot.docs.map((doc) => {
-          const item: IdollInfo = doc.data() as IdollInfo;
-          return item.photo;
+          const item: IdollsAndCloset = doc.data() as IdollsAndCloset;
+          return item.photo ? item.photo : "error.png";
         });
         setImgList(newImgList);
       }
@@ -91,6 +91,10 @@ export default function HomeImage() {
 
   useEffect(() => {
     interval.current = window.setInterval(() => {
+      if (imgList.length === 0) {
+        clearInterval(interval.current);
+        return;
+      }
       setOrder((preOrder) =>
         updateOrder("rightArrow", preOrder, imgList.length)
       );

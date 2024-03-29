@@ -5,49 +5,68 @@ export type IUserData = {
   error?: string;
 };
 
-// 받는데이터 인터페이스
-export interface IdollInfo {
-  name: string; // 이름
-  size: string; // 크기
-  whereBuy: string; // 구매처
-  groupOrder: string; // 공구주
-  buyerLeader?: string;
-  isGroupBuying: boolean; // 공구중인 아이템?
-  price: string; // 가격
-  etc: string; // 비고
-  photo: string; // 사진주소
-  attr: string; // 속성
-  id?: string; // ??
-  category: string; // 카테고리
-  userId: string; // 유저아이디
-  link?: string; // 커스텀링크
-  createdAt?: string; // 생성시간
-}
-
+// 홈 아이콘에 대한 인터페이스
 export type IShortCutIcon = {
   url: string;
   src: "dolls" | "closet" | "link" | "add";
   name: string;
 };
 
-type ISizeType = 5 | 10 | 15 | 20 | 25 | 30;
-
-// AddGBItem Form에 쓰는 Interface
-export type IGBForm = {
-  size: ISizeType;
-  attr: "noattr" | "attr";
-  category: "dolls" | "closet";
-  name: string;
-  price: number;
-  groupOrder?: string;
-  buyerLeader?: string;
-  etc?: string;
-  whereBuy?: string;
-  link?: string;
-  photo?: FileList;
-};
+// 인형 사이즈
+type IdollSize = 5 | 10 | 15 | 20 | 25 | 30;
 
 // IGHomeList props에 쓰는 Interface
 export type IGBHomeList = {
-  data: IdollInfo[] | undefined;
+  data: IdollsAndCloset[] | undefined;
 };
+
+type IAttr = "attr" | "noAttr";
+type IDeliveryProgress = "inProduction" | "inTransit" | "delivered";
+type ICategory = "dolls" | "closet";
+
+// 인형과 옷장 타입
+export type IdollsAndCloset = {
+  name: string;
+  price: string;
+  size: IdollSize;
+  groupOrder: string;
+  buyerLeader?: string;
+  amIbuyerLeader?: boolean;
+  attr: IAttr;
+  whereBuy?: string;
+  photo?: string;
+  deliveryProgress: IDeliveryProgress;
+  comment?: string;
+  customLink?: string;
+  id: string;
+  userId: string;
+  createdAt: string;
+  isGroupBuying: string;
+  category: ICategory;
+};
+
+// AddGBItem Form에 쓰는 interface
+export type IGBForm = {
+  name: string;
+  price: number;
+  size: IdollSize;
+  groupOrder: string;
+  buyerLeader?: string;
+  amIbuyerLeader?: boolean;
+  attr: IAttr;
+  whereBuy?: string;
+  photo?: FileList;
+  deliveryProgress: IDeliveryProgress;
+  comment?: string;
+  customLink?: string;
+  category: ICategory;
+  buyers?: { value: string; value2: string }[];
+};
+
+// 열거형 대신 쓴거
+export const deliveryState = {
+  inProduction: "inProduction",
+  inTransit: "inTransit",
+  delivered: "delivered",
+} as const;
+export type deliveryState = (typeof deliveryState)[keyof typeof deliveryState];

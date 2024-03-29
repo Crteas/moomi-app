@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { IGBHomeList, IdollInfo } from "../types/types";
+import { IGBHomeList, IdollsAndCloset } from "../types/types";
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ const Item = styled.div`
 `;
 
 type IRow = {
-  data: IdollInfo;
+  data: IdollsAndCloset;
 };
 
 function Row({ data }: IRow) {
@@ -52,9 +52,9 @@ function Row({ data }: IRow) {
       <Item>
         {data.groupOrder}/{data.buyerLeader}
       </Item>
-      <Item>{data.etc}</Item>
+      <Item>{data.comment}</Item>
       <Item>
-        <a href={data.link} target="_blank" rel="noopener noreferrer">
+        <a href={data.customLink} target="_blank" rel="noopener noreferrer">
           링크
         </a>
       </Item>

@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import ShortCutIcon from "../components/ShortCutIcon";
-import TextItemList from "../components/TextItemList";
 import HomeImage from "../components/HomeImage";
 import { useEffect, useState } from "react";
-import { fetchGroupBuyingList, initGroupOrderData } from "../api/api";
+import { initGroupOrderData } from "../api/api";
 import GBHomeList from "../components/GBHomeList";
-import { IdollInfo } from "../types/types";
+import { IdollsAndCloset } from "../types/types";
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,7 +29,7 @@ const HomeSection = styled.div`
 const ImgWrapper = styled.div``;
 
 function Home() {
-  const [list, setList] = useState<IdollInfo[]>();
+  const [list, setList] = useState<IdollsAndCloset[]>();
   useEffect(() => {
     initGroupOrderData().then((data) => {
       setList(data);
