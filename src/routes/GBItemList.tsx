@@ -14,15 +14,52 @@ import {
   where,
 } from "firebase/firestore";
 import { IdollsAndCloset } from "../types/types";
+import GBItem from "../components/GBItem";
+import { useInView } from "react-intersection-observer";
 
-const Wrapper = styled.div``;
-const GBList = styled.ul``;
-const GBItem = styled.li``;
+const Wrapper = styled.div`
+  margin: 0 auto;
+  max-width: 90%;
+`;
+const GBList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
+  justify-content: center;
+`;
+const Item = styled.div``;
 
 export default function GBItemList() {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [target, setTarget] = useState<HTMLDivElement | null>(null);
   const [hasNext, setHasNext] = useState<boolean>(true);
   const [gBList, setGBList] = useState<IdollsAndCloset[]>([]);
   const [lastSnap, setLastSnap] = useState<QuerySnapshot | null>(null);
+
+  useEffect(() => {
+    if (isLoading) return;
+    let observer: IntersectionObserver | null = null;
+    if (target) {
+      const observeCallback = async (
+        [entry]: IntersectionObserverEntry[],
+        observer: IntersectionObserver
+      ) => {
+        if (entry.isIntersecting) {
+          observer.unobserve(entry.target);
+          fetchNextGBItem();
+          if (!hasNext) {
+            observer.observe(entry.target);
+          }
+        }
+      };
+
+      observer = new IntersectionObserver(observeCallback);
+      observer.observe(target);
+    }
+
+    return () => {
+      observer && observer.disconnect();
+    };
+  }, [target, isLoading]);
 
   const fetchGBItemList = async () => {
     const user = auth.currentUser;
@@ -44,11 +81,15 @@ export default function GBItemList() {
       });
       if (snapShot.empty) {
         alert("없어요");
+        setHasNext(false);
       } else {
         setLastSnap(snapShot);
         setGBList(dataList);
       }
-    } catch (e) {}
+    } catch (e) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const fetchNextGBItem = async () => {
@@ -86,13 +127,17 @@ export default function GBItemList() {
     <Wrapper>
       <GBList>
         {gBList.map((data) => {
-          return <GBItem key={data.id}>{data.name}</GBItem>;
+          return (
+            <Item key={data.id}>
+              <GBItem data={data} />
+            </Item>
+          );
         })}
       </GBList>
       <button type="button" onClick={fetchNextGBItem}>
         다음
       </button>
-      <div></div>
+      <div ref={setTarget}></div>
     </Wrapper>
   );
 }
