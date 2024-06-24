@@ -21,13 +21,21 @@ export type IGBHomeList = {
 };
 
 type IAttr = "attr" | "noAttr";
-type IDeliveryProgress = "inProduction" | "inTransit" | "delivered";
+export type IDeliveryProgress = "inProduction" | "inTransit" | "delivered";
 type ICategory = "dolls" | "closet";
 
 // 인형과 옷장 타입
 export type IdollsAndCloset = {
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | { value: string; value2: string }
+    | { value: string; value2: string }[]
+    | FileList
+    | undefined;
   name: string;
-  price: string;
+  price: number;
   size: IdollSize;
   groupOrder: string;
   buyerLeader?: string;
@@ -43,6 +51,7 @@ export type IdollsAndCloset = {
   createdAt: string;
   isGroupBuying: string;
   category: ICategory;
+  buyers?: { value: string; value2: string }[];
 };
 
 // AddGBItem Form에 쓰는 interface
@@ -70,3 +79,22 @@ export const deliveryState = {
   delivered: "delivered",
 } as const;
 export type deliveryState = (typeof deliveryState)[keyof typeof deliveryState];
+
+export type IFormItems =
+  | "name"
+  | "price"
+  | "size"
+  | "groupOrder"
+  | "buyerLeader"
+  | "amIbuyerLeader"
+  | "attr"
+  | "whereBuy"
+  | "photo"
+  | "deliveryProgress"
+  | "comment"
+  | "customLink"
+  | "category"
+  | "buyers"
+  | `buyers.${number}`
+  | `buyers.${number}.value`
+  | `buyers.${number}.value2`;

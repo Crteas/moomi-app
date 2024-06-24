@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { auth } from "../firebase";
 
 const Wrapper = styled.div`
-  height: 100vh;
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 480px;
+  display: flex;
+  flex-direction: column;
 `;
 const TITLEHIGHT = "70px";
 const TitleWrapper = styled.div`
@@ -31,7 +35,7 @@ const Main = styled.div`
 
 function Layout() {
   return (
-    <Wrapper>
+    <>
       <TitleWrapper>
         <Title>니 솜깅이 이 솜깅이냐</Title>
       </TitleWrapper>
@@ -40,7 +44,7 @@ function Layout() {
           <Outlet />
         </Main>
       </MainWrapper>
-    </Wrapper>
+    </>
   );
 }
 

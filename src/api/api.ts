@@ -1,6 +1,8 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { auth, db } from "../firebase";
-import { IdollsAndCloset } from "../types/types";
+import { auth, db, storage } from "../firebase";
+import { IGBForm, IdollsAndCloset } from "../types/types";
+import { User } from "firebase/auth";
+import { deleteObject, ref } from "firebase/storage";
 
 // firebase에서 공구리스트 불러오기
 export const fetchGroupBuyingList = async () => {
@@ -45,6 +47,7 @@ export const initGroupOrderData = async (
   }
 };
 
+// 캐싱함수
 const fetchDataAndStore = async (): Promise<IdollsAndCloset[]> => {
   try {
     const list: IdollsAndCloset[] = await fetchGroupBuyingList();

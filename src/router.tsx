@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import ProtectedRoute from "./components/protected-route";
 import GBItemForm from "./routes/GBItemForm";
 import GBItemList from "./routes/GBItemList";
+import GBItemDetail from "./routes/GBItemDetail";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,14 @@ const router = createBrowserRouter([
       {
         path: "/GBlist",
         element: <GBItemList />,
+      },
+      {
+        path: "/GBitem/:id",
+        element: <GBItemDetail />,
+      },
+      {
+        path: "/GBitem/:id/edit",
+        element: <GBItemForm />,
       },
     ],
     errorElement: <ErrorPage />,

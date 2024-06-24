@@ -45,7 +45,7 @@ function Home() {
       <br />
       <ShortCutIconList>
         <ShortCutIcon url="/dolls/list" src="dolls" name="인형" />
-        <ShortCutIcon url="/closet/list" src="closet" name="옷" />
+        <ShortCutIcon url="/GBlist" src="closet" name="공구" />
         <ShortCutIcon url="/dolls/list" src="link" name="링크" />
         <ShortCutIcon url="/addGBitem" src="add" name="등록" />
       </ShortCutIconList>

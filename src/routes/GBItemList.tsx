@@ -4,18 +4,15 @@ import { auth, db } from "../firebase";
 import {
   QuerySnapshot,
   collection,
-  doc,
   getDocs,
   limit,
   orderBy,
   query,
   startAfter,
-  startAt,
   where,
 } from "firebase/firestore";
 import { IdollsAndCloset } from "../types/types";
 import GBItem from "../components/GBItem";
-import { useInView } from "react-intersection-observer";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -37,6 +34,7 @@ export default function GBItemList() {
 
   useEffect(() => {
     if (isLoading) return;
+    // 무한 스크롤
     let observer: IntersectionObserver | null = null;
     if (target) {
       const observeCallback = async (
@@ -134,9 +132,6 @@ export default function GBItemList() {
           );
         })}
       </GBList>
-      <button type="button" onClick={fetchNextGBItem}>
-        다음
-      </button>
       <div ref={setTarget}></div>
     </Wrapper>
   );

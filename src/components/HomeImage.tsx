@@ -12,7 +12,6 @@ import {
 } from "firebase/firestore";
 import { IdollsAndCloset } from "../types/types";
 
-const Wrapper = styled.div``;
 const Img = styled.img`
   background-color: wheat;
   width: 300px;
@@ -75,7 +74,7 @@ export default function HomeImage() {
         // 불러온 아이템중 photo만 배열에 넣기
         const newImgList = snapShot.docs.map((doc) => {
           const item: IdollsAndCloset = doc.data() as IdollsAndCloset;
-          return item.photo ? item.photo : "error.png";
+          return item.photo ? item.photo : "iconImg/no_img.png";
         });
         setImgList(newImgList);
       }
@@ -105,7 +104,7 @@ export default function HomeImage() {
   }, [imgList.length]);
 
   return (
-    <Wrapper>
+    <>
       <Img src={imgList[order]} />
 
       <PaginationWrapper>
@@ -119,6 +118,6 @@ export default function HomeImage() {
           {">"}
         </ArrowButton>
       </PaginationWrapper>
-    </Wrapper>
+    </>
   );
 }
